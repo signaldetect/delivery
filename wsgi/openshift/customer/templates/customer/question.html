@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load boots %}
+
+{% block title %}Онлайн-помощник «Карготрека»{% endblock %}
+
+{% block custom_style %}
+  .form-normal {
+    padding: 15px;
+    margin: 0 auto;
+  }
+  .form-normal p {
+    font-size: 16px;
+  }
+  .form-normal .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .form-normal .form-control.choicebox {
+    padding: 0;
+    border: 0;
+  }
+  .choicebox.on-focus {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+  }
+  .choicebox.on-focus button, .choicebox.on-focus ul {
+    border-color: #66afe9;
+  }
+  .choicebox button {
+    padding: 10px 30px 10px 10px;
+    text-align: left;
+    white-space: normal;
+    font-size: inherit;
+  }
+  .choicebox button:focus {
+    outline: 0;
+  }
+  .choicebox button.options-show {
+    border-bottom-color: #cccccc;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .choicebox ul {
+    background-color: #f9f9f9;
+    border: 1px solid #cccccc;
+    border-top: 0;
+    border-radius: 0 0 6px 6px;
+    font-size: inherit;
+  }
+  .choicebox ul :last-child {
+    border-radius: 0 0 6px 6px;
+  }
+  .choicebox ul li {
+    padding: 10px;
+    border-top: 2px solid #ffffff;
+    cursor: pointer;
+  }
+  .choicebox ul li:hover {
+    background-color: #ebebeb;
+  }
+  .choicebox span.caret {
+    float: right;
+    position: relative;
+    top: 8px;
+    right: -20px;
+  }
+  .popover {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+  }
+  .popover .popover-content {
+    padding-right: 35px;
+  }
+  .popover .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+  }
+  .popover .close:hover, .popover .close:focus {
+    color: #000000;
+  }
+  .popover p, .popover ul {
+    margin-bottom: 0;
+  }
+  .popover.right .arrow {
+    border-right-color: #ebccd1;
+  }
+  .popover.right .arrow:after {
+    border-right-color: #f2dede;
+  }
+  .popover.bottom .arrow {
+    border-bottom-color: #ebccd1;
+  }
+  .popover.bottom .arrow:after {
+    border-bottom-color: #f2dede;
+  }
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <form role="form" class="form-normal" action="" method="post">{% csrf_token %}
+        <h2>Помощь экспертов</h2>
+        <p>Опишите вашу проблему и мы поможем найти решение</p>
+        {% b_choicebox form.kind 'autofocus' %}
+        {% b_textarea form.text rows='10' %}
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Отправить</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block custom_script %}
+  <script>
+    function choicebox(el) {
+      return el.parent('.choicebox');
+    }
+    function toggle_choicebox(sel, opts) {
+      opts.slideToggle();
+      sel.toggleClass('options-show');
+      sel.focus();
+    }
+    $('.choicebox button').click(function () {
+      var sel = $(this);
+      var box = choicebox(sel);
+      var opts = box.find('ul');
+      toggle_choicebox(sel, opts);
+    });
+    $('.choicebox li').click(function () {
+      var opt = $(this);
+      var opts = opt.parent('ul');
+      var box = choicebox(opts);
+      var tr = box.find('input');
+      var val = tr.val();
+      tr.val(opt.data('val'));
+      opt.data('val', val);
+      opt.attr('data-val', val);
+      var sel = box.find('button');
+      var sel_txt = sel.find('.txt');
+      var txt = sel_txt.text();
+      sel_txt.text(opt.text());
+      opt.text(txt);
+      toggle_choicebox(sel, opts);
+    });
+    $('.choicebox button').focus(function () {
+      choicebox($(this)).addClass('on-focus');
+    }).blur(function () {
+      choicebox($(this)).removeClass('on-focus');
+    });
+  </script>
+  {% if form.has_field_errors %}
+  <script>
+    function popover_placement(po, el) {
+      var win_width = window.innerWidth;
+      var el_right = $(el).offset().left + $(el).outerWidth(true);
+      if ((win_width - el_right) < 280)
+        return 'bottom';
+      return 'right';
+    }
+    function popover_content() {
+      var btn_close = '<button type="button" class="close" data-fld="#' +
+                      $(this).attr('id') + '">&times;</button>';
+      return btn_close + $(this).data('errors');
+    }
+    $(document).ready(function () {
+      var popover_sets = {
+        container: 'body',
+        trigger: 'manual',
+        placement: popover_placement,
+        html: true,
+        content: popover_content
+      };
+      var flds = $('[rel="popover"]');
+      flds.popover(popover_sets);
+      if (flds.length > 1) {
+        flds.each(function (i) {
+          $(this).on('show.bs.popover', function () {
+            var popover = $(this).data('bs.popover').tip();
+            popover.css('z-index', 1010 - i);
+          });
+        });
+      }
+      flds.popover('show');
+    });
+    $(document).click(function (e) {
+      if ($(e.target).is('.popover .close'))
+        $($(e.target).data('fld')).popover('destroy');
+    });
+    $(window).resize(function () {
+      if ($('.popover').length > 0)
+        $('[rel="popover"]').popover('show');
+    });
+  </script>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Новости «Карготрека»{% endblock %}
+
+{% block custom_style %}
+  .row-offcanvas {
+    margin-top: 20px;
+  }
+  @media screen and (max-width: 767px) {
+    .row-offcanvas {
+      position: relative;
+      -webkit-transition: all .25s ease-out;
+         -moz-transition: all .25s ease-out;
+              transition: all .25s ease-out;
+    }
+    .row-offcanvas-right {
+      right: 0;
+    }
+    .row-offcanvas-left {
+      left: 0;
+    }
+    .row-offcanvas-right .sidebar-offcanvas {
+      right: -50%; /* 6 columns */
+    }
+    .row-offcanvas-left .sidebar-offcanvas {
+      left: -50%; /* 6 columns */
+    }
+    .row-offcanvas-right.active {
+      right: 50%; /* 6 columns */
+    }
+    .row-offcanvas-left.active {
+      left: 50%; /* 6 columns */
+    }
+    .sidebar-offcanvas {
+      position: absolute;
+      top: 0;
+      width: 50%; /* 6 columns */
+    }
+  }
+  .nav-sidebar li.active {
+    z-index: 2;
+    background-color: #428bca;
+    border-color: #428bca;
+  }
+  .nav-sidebar li span {
+    border-bottom: 1px solid;
+  }
+  .nav-sidebar li.active span {
+    position: relative;
+    display: block;
+    padding: 10px 15px 10px 15px;
+    color: #ffffff;
+  }
+{% endblock %}
+
+{% block content %}
+  <div class="row row-offcanvas row-offcanvas-right">
+    <div class="col-xs-12 col-sm-9">
+      <p class="pull-right visible-xs"><button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Другие годы</button></p>
+  {% if news_list %}
+      <p class="lead">Новости за {{ year }}-й год</p>
+    {% regroup news_list by created_at.month as news_by_month %}
+    {% for news_of_month in news_by_month %}
+      {% if forloop.first %}
+      <div class="jumbotron">
+      {% else %}
+      <div class="col-6 col-sm-6">
+      {% endif %}
+        <dl class="dl-horizontal">
+      {% for news in news_of_month.list %}
+        {% with dt=news.created_at %}
+          {% ifchanged dt.day %}
+          <dt>{{ dt|date:'j E' }}</dt>
+          {% else %}
+          <dt></dt>
+          {% endifchanged %}
+        {% endwith %}
+          <dd>{{ news.text|safe }}</dd>
+      {% endfor %}
+        </dl>
+      </div>
+      {% ifnotequal forloop.first forloop.last %}
+        {% if forloop.first %}<div class="row">{% else %}</div>{% endif %}
+      {% endifnotequal %}
+    {% endfor %}
+  {% else %}
+    <p class="lead">Новости за {{ year }}-й год отсутствуют.</p>
+  {% endif %}
+    </div>
+    <div role="navigation" id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas">
+      <ul class="nav nav-sidebar">
+  {% for yr in years %}
+    {% ifequal yr year %}
+        <li class="active"><span>{{ yr }}</span></li>
+    {% else %}
+        <li><a href="{% url 'info:news' yr %}"><span>{{ yr }}</span></a></li>
+    {% endifequal %}
+  {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}
+
+{% block custom_script %}
+  <script>
+    $(document).ready(function () {
+      $('[data-toggle=offcanvas]').click(function () {
+        $('.row-offcanvas').toggleClass('active')
+      });
+    });
+  </script>
+{% endblock %}

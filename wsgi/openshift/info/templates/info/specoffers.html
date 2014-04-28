@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Спецпредложения «Карготрека»{% endblock %}
+
+{% block custom_style %}
+  .row-offcanvas {
+    margin-top: 20px;
+  }
+  @media screen and (max-width: 767px) {
+    .row-offcanvas {
+      position: relative;
+      -webkit-transition: all .25s ease-out;
+         -moz-transition: all .25s ease-out;
+              transition: all .25s ease-out;
+    }
+    .row-offcanvas-right {
+      right: 0;
+    }
+    .row-offcanvas-left {
+      left: 0;
+    }
+    .row-offcanvas-right .sidebar-offcanvas {
+      right: -50%; /* 6 columns */
+    }
+    .row-offcanvas-left .sidebar-offcanvas {
+      left: -50%; /* 6 columns */
+    }
+    .row-offcanvas-right.active {
+      right: 50%; /* 6 columns */
+    }
+    .row-offcanvas-left.active {
+      left: 50%; /* 6 columns */
+    }
+    .sidebar-offcanvas {
+      position: absolute;
+      top: 0;
+      width: 50%; /* 6 columns */
+    }
+  }
+  .nav-sidebar li.active {
+    z-index: 2;
+    background-color: #428bca;
+    border-color: #428bca;
+  }
+  .nav-sidebar li span {
+    border-bottom: 1px solid;
+  }
+  .nav-sidebar li.active span {
+    position: relative;
+    display: block;
+    padding: 10px 15px 10px 15px;
+    color: #ffffff;
+  }
+{% endblock %}
+
+{% block content %}
+  <div class="row row-offcanvas row-offcanvas-right">
+    <div class="col-xs-12 col-sm-9">
+      <p class="pull-right visible-xs"><button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Другие акции</button></p>
+  {% if specoffers_list %}
+    {% if state == 'active' %}
+      <p class="lead">Действующие предложения</p>
+    {% elif state == 'finished' %}
+      <p class="lead">Завершенные акции</p>
+    {% else %}
+      <p class="lead">Специальные предложения</p>
+    {% endif %}
+    {% regroup specoffers_list by created_at.year as specoffers_by_year %}
+    {% for specoffers_of_year in specoffers_by_year %}
+      {% if forloop.first %}
+      <div class="jumbotron">
+      {% else %}
+      <div class="col-6 col-sm-6">
+      {% endif %}
+        <dl class="dl-horizontal">
+      {% for specoffer in specoffers_of_year.list %}
+        {% with dt=specoffer.created_at %}
+          {% ifchanged dt.month dt.day %}
+          <dt>{{ dt|date:'j E Y' }}</dt>
+          {% else %}
+          <dt></dt>
+          {% endifchanged %}
+        {% endwith %}
+          <dd>{{ specoffer.text|safe }}{% if state == 'all' and specoffer.finished %} <span class="label label-default">акция завершена</span>{% endif %}</dd>
+      {% endfor %}
+        </dl>
+      </div>
+      {% ifnotequal forloop.first forloop.last %}
+        {% if forloop.first %}<div class="row">{% else %}</div>{% endif %}
+      {% endifnotequal %}
+    {% endfor %}
+  {% else %}
+    {% if state == 'active' %}
+      <p class="lead">Действующие предложения отсутствуют.</p>
+    {% elif state == 'finished' %}
+      <p class="lead">Завершенные акции отсутствуют.</p>
+    {% else %}
+      <p class="lead">Спецпредложения отсутствуют.</p>
+    {% endif %}
+  {% endif %}
+    </div>
+    <div role="navigation" id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas">
+      <ul class="nav nav-sidebar">
+  {% for item in menu.states %}
+    {% ifequal state item.name %}
+        <li class="active"><span>{{ item.text }}</span></li>
+    {% else %}
+        <li><a href="{% url 'info:specoffers' item.name %}"><span>{{ item.text }}</span></a></li>
+    {% endifequal %}
+  {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}
+
+{% block custom_script %}
+  <script>
+    $(document).ready(function () {
+      $('[data-toggle=offcanvas]').click(function () {
+        $('.row-offcanvas').toggleClass('active')
+      });
+    });
+  </script>
+{% endblock %}

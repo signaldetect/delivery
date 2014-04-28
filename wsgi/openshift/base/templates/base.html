@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Карготрек (прототип){% endblock %}</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+      body {
+        margin-bottom: 85px;
+      }
+      @media (min-width: 768px) {
+        .navbar-form.navbar-right {
+          width: 25%;
+        }
+      }
+      .navbar {
+        margin-bottom: 0;
+      }
+      .navbar span.ref {
+        border-bottom: 1px solid;
+      }
+      .navbar .nav a {
+      }
+      .navbar .navbar-text.active {
+        margin: 0;
+        padding: 15px;
+        color: #555555;
+        background-color: #e7e7e7;
+      }
+      .jumbotron.board {
+        background: #202020 url("/static/images/board-bg.png") center repeat;
+        background-color: #202020;
+        color: #999999;
+      }
+      .jumbotron.board h1 {
+        margin-top: 0;
+        color: #ffffff;
+      }
+      .jumbotron.board h2, .jumbotron.board h3 {
+        margin-bottom: 20px;
+        color: #4183c4;
+      }
+      .jumbotron.board ul li {
+        font-size: 21px;
+        margin-bottom: 10px;
+      }
+      .jumbotron.board ul li .glyphicon {
+        top: 4px;
+      }
+      .jumbotron dl {
+        font-size: 21px;
+        margin-bottom: 0;
+      }
+      dl {
+        margin-bottom: 40px;
+      }
+      .dl-horizontal dt {
+        float: none;
+        width: inherit;
+        clear: none;
+        text-align: left;
+        overflow: auto;
+        text-overflow: inherit;
+        white-space: inherit;
+        font-weight: normal;
+        color: #8a8a8a;
+      }
+      .dl-horizontal dd {
+        margin-left: 0;
+        margin-bottom: 20px;
+      }
+      .lead.page-informing {
+        margin-top: 20px;
+      }
+      .txt a, a.txt {
+        text-decoration: none;
+        border-bottom: 1px solid;
+      }
+      .txt ul {
+        list-style-type: square;
+        -webkit-padding-start: 18px;
+      }
+      footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 85px;
+      }
+      {% block custom_style %}{% endblock %}
+    </style>
+  </head>
+  <body>
+    <div role="navigation" class="navbar navbar-default navbar-static-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+{% ifequal menu_item index.name %}
+          <span class="navbar-brand">{{ index.text }}</span>
+{% else %}
+          <a href="{% url 'info:'|add:index.name %}" class="navbar-brand">{{ index.text }}</a>
+{% endifequal %}
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+{% for item in menu.info %}
+  {% ifequal menu_item item.name %}
+            <li><p class="navbar-text active">{{ item.text }}</p></li>
+  {% else %}
+            <li><a href="{% if item.path %}{% url 'info:'|add:item.path item.name %}{% else %}{% url 'info:'|add:item.name %}{% endif %}"><span class="ref">{{ item.text }}</span></a></li>
+  {% endifequal %}
+{% endfor %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+{% for item in menu.customer %}
+  {% ifequal menu_item item.name %}
+            <li><p class="navbar-text active">{{ item.text }}</p></li>
+  {% else %}
+            <li><a href="{% url 'customer:'|add:item.name %}"><span class="ref">{{ item.text }}</span></a></li>
+  {% endifequal %}
+{% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% block featured_content %}{% endblock %}
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+    <footer>
+      <div class="container">
+        <hr />
+        <div class="row">
+          <div class="col-xs-6 col-sm-8 col-md-9">
+            <p>&copy; 2014 «Карготрек»</p>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <form role="search" class="">
+              <div class="input-group">
+                <label class="sr-only" for="id_search">Поиск</label>
+                <input type="search" id="id_search" class="form-control" placeholder="поиск" />
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-default">&#8626;</button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    {% block custom_script %}{% endblock %}
+  </body>
+</html>

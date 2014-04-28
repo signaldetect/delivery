@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load boots %}
+
+{% block title %}Личный кабинет «Мой Карготрек»{% endblock %}
+
+{% block custom_style %}
+  .form-solid {
+    padding: 15px;
+    margin: 0 auto;
+  }
+  .form-solid h2, .form-solid .h2 {
+    margin-bottom: 15px;
+  }
+  .form-solid .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    border-radius: 0;
+    margin-bottom: -1px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .form-solid .form-control:focus {
+    z-index: 2;
+  }
+  .form-solid .form-control.first {
+    border-radius: 4px 4px 0 0;
+  }
+  .form-solid .form-control.last {
+    border-radius: 0 0 4px 4px;
+    margin-bottom: 15px;
+  }
+  .form-heading {
+    padding: 15px 15px 0 15px;
+    margin: 0 auto;
+  }
+  .form-heading h2, .form-heading .h2 {
+    margin-bottom: 0;
+  }
+  .form-addon {
+    padding: 15px;
+    font-size: 16px;
+  }
+  @media (min-width: 768px) {
+    .form-addon {
+      padding: 15px 0 15px 0;
+    }
+  }
+  @media (min-width: 992px) {
+    .form-addon {
+      padding: 15px;
+    }
+  }
+  .form-addon .well {
+    border: 0;
+  }
+  .popover {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+  }
+  .popover .popover-content {
+    padding-right: 35px;
+  }
+  .popover .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+  }
+  .popover .close:hover, .popover .close:focus {
+    color: #000000;
+  }
+  .popover p, .popover ul {
+    margin-bottom: 0;
+  }
+  .popover.right .arrow {
+    border-right-color: #ebccd1;
+  }
+  .popover.right .arrow:after {
+    border-right-color: #f2dede;
+  }
+  .popover.bottom .arrow {
+    border-bottom-color: #ebccd1;
+  }
+  .popover.bottom .arrow:after {
+    border-bottom-color: #f2dede;
+  }
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+      <form role="form" class="form-solid" action="" method="post">{% csrf_token %}
+        <h2>Новый личный кабинет</h2>
+  {% if form.non_field_errors %}
+        <div id="non_field_alert" class="alert alert-danger alert-dismissable fade in">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+    {% endfor %}
+        </div>
+  {% endif %}
+        {% b_input form.first_name 'autofocus' type='text' spec_class='first' %}
+        {% b_input form.last_name type='text' %}
+        {% b_input form.email type='email' %}
+        {% b_input form.password type='password' %}
+        {% b_input form.password_confirm type='password' %}
+        {% b_input form.phone type='tel' spec_class='last' %}
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Создать</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block custom_script %}
+  {% if form.has_field_errors %}
+  <script>
+    function popover_placement(po, el) {
+      var win_width = window.innerWidth;
+      var el_right = $(el).offset().left + $(el).outerWidth(true);
+      if ((win_width - el_right) < 280)
+        return 'bottom';
+      return 'right';
+    }
+    function popover_content() {
+      var btn_close = '<button type="button" class="close" data-fld="#' +
+                      $(this).attr('id') + '">&times;</button>';
+      return btn_close + $(this).data('errors');
+    }
+    $(document).ready(function () {
+      var popover_sets = {
+        container: 'body',
+        trigger: 'manual',
+        placement: popover_placement,
+        html: true,
+        content: popover_content
+      };
+      var flds = $('[rel="popover"]');
+      flds.popover(popover_sets);
+      if (flds.length > 1) {
+        flds.each(function (i) {
+          $(this).on('show.bs.popover', function () {
+            var popover = $(this).data('bs.popover').tip();
+            popover.css('z-index', 1010 - i);
+          });
+        });
+      }
+      flds.popover('show');
+    {% if form.non_field_errors %}
+      $('#non_field_alert').bind('closed.bs.alert', function () {
+        if ($('.popover').length > 0) {
+          var el_height = $(this).outerHeight(true);
+          $('.popover').each(function () {
+            var po_top = $(this).offset().top;
+            $(this).offset({top: po_top - el_height});
+          });
+        }
+      });
+    {% endif %}
+    });
+    $(document).click(function (e) {
+      if ($(e.target).is('.popover .close'))
+        $($(e.target).data('fld')).popover('destroy');
+    });
+    $(window).resize(function () {
+      if ($('.popover').length > 0)
+        $('[rel="popover"]').popover('show');
+    });
+  </script>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block featured_content %}
+  <div class="jumbotron board">
+    <div class="container">
+      <div class="row col-xs-12">
+        <h1>Международные перевозки</h1>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <h2 class="text-success">Сервис логистических услуг</h2>
+          <ul class="list-unstyled">
+            <li><span class="glyphicon glyphicon-cloud"></span>&nbsp;&nbsp;Весь комплекс предоставляемых услуг&nbsp;&mdash; онлайн</li>
+            <li><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Активная обратная связь в любое время</li>
+            <li><span class="glyphicon glyphicon-eye-close"></span>&nbsp;&nbsp;Конфиденциальность информации и защита данных</li>
+            <li><span class="glyphicon glyphicon-phone"></span>&nbsp;&nbsp;Поддержка десктопов и мобильных устройств</li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h2 class="text-success">Личный кабинет</h2>
+          <p>Заказывайте и отслеживайте перевозки, рассчитывайте их стоимость, управляйте доставками и выписывайте счета.</p>
+          <p><a href="{% url 'customer:register' %}" role="button" class="btn btn-primary btn-lg">Создать личный кабинет &rarr;</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-4">
+      <h2>Что нового</h2>
+      <div class="txt">
+  {% for ad in last_ads %}
+        <p><span class="label label-{% ifequal ad.tag 'specoffer' %}success{% else %}info{% endifequal %}">{{ ad.created_at|date:'d.m' }}</span> {{ ad.text|safe }}</p>
+  {% empty %}
+        <p>Новостей пока нет :(</p>
+  {% endfor %}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h2>Помощь экспертов</h2>
+      <!--p>Обычно у внешнеторгового груза целый пакет сопроводительных документов, работа с которыми требует специальных знаний и опыт. Вы можете воспользоваться услугами наших экспертов, которые помимо таможенного оформления помогут оформить разрешительные документы и заключения, а также подготовить коммерческую и товаросопроводительную документацию, проконсультируют вас в вопросах налогообложения внешнеэкономических операций.</p-->
+      <div class="txt">
+        <p>Мы выполняем операции по таможенному оформлению:</p>
+        <ul>
+          <li>декларирование товаров, составление ГТД и сопутствующих документов;</li>
+          <li>предоставление таможенному органу необходимых документов и дополнительных сведений;</li>
+          <li>предъявление декларируемых товаров;</li>
+          <li>прочие операции, необходимые для таможенного оформления и контроля.</li>
+        </ul>
+      </div>
+      <p><a href="{% url 'customer:question' %}" role="button" class="btn btn-default">Оставить заявку &rarr;</a> или <a href="{% url 'customer:hotline' %}" class="txt">задать вопрос</a></p>
+    </div>
+    <div class="col-md-4">
+      <h2>Доставка груза</h2>
+      <div class="txt">
+        <p>Вы можете заказывать в режиме онлайн:</p>
+        <ul>
+          <li>доставки личных вещей и товаров интернет-магазинов;</li>
+          <li>перевозки негабаритных и тяжеловесных грузов;</li>
+          <li>доставки опасных грузов;</li>
+          <li>переезды грузов;</li>
+          <li>перевозки под таможенным контролем;</li>
+          <li>доставки сборных грузов;</li>
+          <li>мультимодальные перевозки.</li>
+        </ul>
+      </div>
+      <p><a href="{% url 'customer:order' %}" role="button" class="btn btn-default">Заказать доставку &rarr;</a></p>
+    </div>
+  </div>
+{% endblock %}
