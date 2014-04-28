@@ -99,14 +99,14 @@ class Register(Form):
         models.Profile.objects.create(user=user, phone=phone)
         # Notifies the user
         if email_user:
-            subject = 'Welcome to Cargo Trek'
+            subject = "Welcome to Delivery Int'l"
             message = 'Hello, {0}!\n\n' \
                       'Thank you for registering.\n\n' \
                       'Here bellow you can find your credentials.\n\n' \
                       'E-mail: {1}\n' \
                       'Password: Your Set Password\n\n' \
                       'Regards,\n\n' \
-                      '-- Cargo Trek\n'.format(user.first_name, user.email)
+                      "-- Delivery Int'l\n".format(user.first_name, user.email)
             user.email_user(subject, message)
 
     def validate_auth(self):
@@ -196,10 +196,10 @@ class Hotline(Form):
         email = data['email']
         # Sends the question to operator
         #send_mail(subject, message=text, from_email=email,
-        #          recipient_list=['hotline@cargotrek.net'])
+        #          recipient_list=['hotline@delivery-international.com'])
         # Sends copy of the question to user
         if email_user:
-            subject = 'Question to Cargo Trek: {0}'.format(subject)
+            subject = "Question to Delivery Int'l: {0}".format(subject)
             user = request.user
             if user:
                 message = 'Hello, {0}!\n\nYour message:\n{1}' \
@@ -207,7 +207,8 @@ class Hotline(Form):
                 user.email_user(subject, message)
             else:
                 message = 'Hello!\n\nYour message:\n{1}'.format(text)
-                send_mail(subject, message, from_email='hotline@cargotrek.net',
+                send_mail(subject, message,
+                          from_email='hotline@delivery-international.com',
                           recipient_list=[email])
 
 class Question(Form):
@@ -239,10 +240,11 @@ class Question(Form):
         # Sends the question to expert
         #send_mail(subject='Question to expert: {0}'.format(kind.name),
         #          message=text, from_email=user.email,
-        #          recipient_list=['expert@cargotrek.net'])
+        #          recipient_list=['expert@delivery-international.com'])
         # Sends copy of the question to user
         if email_user:
-            subject = 'Question to expert of Cargo Trek: {0}'.format(kind.name)
+            subject = "Question to expert of Delivery Int'l: {0}" \
+                      .format(kind.name)
             message = 'Hello, {0}!\n\nYour question:\n{1}' \
                       .format(user.first_name, text)
             user.email_user(subject, message)
@@ -308,12 +310,12 @@ class Order(CargoMixin, Form):
         # Adds the cargo for current order
         cargo = self.add_cargo(order)
         # Notifies the operator
-        #send_mail(subject='Order in Cargo Trek: {0}'.format(kind.name),
+        #send_mail(subject="Order in Delivery Int'l: {0}".format(kind.name),
         #          message=cargo.name, from_email=user.email,
-        #          recipient_list=['operator@cargotrek.net'])
+        #          recipient_list=['operator@delivery-international.com'])
         # Notifies the user
         if email_user:
-            subject = 'Order in Cargo Trek: {0}'.format(kind.name)
+            subject = "Order in Delivery Int'l: {0}".format(kind.name)
             message = 'Hello, {0}!\n\nYour order:\n{1}' \
                       .format(user.first_name, order)
             user.email_user(subject, message)

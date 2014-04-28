@@ -66,7 +66,7 @@ class MenuMixin(object):
             menu_customer = [('login', 'Войти')]
         # Context
         data = super().get_context_data(**kwargs)
-        data['index'] = self._item_struct('home', 'Cargo Trek')
+        data['index'] = self._item_struct('home', "Delivery Int'l")
         data['menu'] = {
             'info': (self._item_struct(*item) for item in menu_info),
             'customer': (self._item_struct(*item) for item in menu_customer)
