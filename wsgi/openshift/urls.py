@@ -1,11 +1,10 @@
 from django.conf.urls import patterns, include, url
-from django.conf import settings
 from django.contrib import admin
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'', include('info.urls', namespace='info')),
-    url(r'^customer/', include('customer.urls', namespace='customer')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^customer/', include('customer.urls', namespace='customer')),
+    url(r'', include('info.urls', namespace='info')),
 )
