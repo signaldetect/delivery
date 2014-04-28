@@ -2,23 +2,28 @@ from setuptools import setup
 
 import os
 
-# Put here required packages or
-# Uncomment one or more lines below in the install_requires section
-# for the specific client drivers/modules your application needs.
-packages = ['Django<=1.6',
-            'static3',  # If you want serve the static files in the same server
-            # 'mysql-connector-python',
-            # 'pymongo',
-            # 'psycopg2',
-           ]
+APP_NAME = 'delivery'
+VERSION = '0.2'
+DESCRIPTION = 'OpenShift Python-3.3 / Django-1.6 Community Cartridge based ' \
+              'application'
+AUTHOR='signaldetect'
+AUTHOR_EMAIL='signaldetect@gmail.com'
 
-if 'REDISCLOUD_URL' in os.environ and 'REDISCLOUD_PORT' in os.environ and 'REDISCLOUD_PASSWORD' in os.environ:
+packages = [
+     'Django<=1.6',
+     'static3',
+     'pytz',
+     # 'mysql-connector-python',
+     # 'pymongo',
+     # 'psycopg2',
+]
+
+if ('REDISCLOUD_URL' in os.environ) and ('REDISCLOUD_PORT' in os.environ) and \
+   ('REDISCLOUD_PASSWORD' in os.environ):
      packages.append('django-redis-cache')
      packages.append('hiredis')
 
-setup(name='YourAppName', version='1.0',
-      description='OpenShift Python-3.3 / Django-1.6 Community Cartridge based application',
-      author='Your Name', author_email='admin@example.org',
+setup(name=APP_NAME, version=VERSION, description=DESCRIPTION,
+      author=AUTHOR, author_email=AUTHOR_EMAIL,
       url='https://pypi.python.org/pypi',
-      install_requires=packages,
-     )
+      install_requires=packages)
