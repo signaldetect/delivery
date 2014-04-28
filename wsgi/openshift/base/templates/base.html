@@ -94,6 +94,9 @@
         width: 100%;
         height: 85px;
       }
+      footer hr {
+        margin-bottom: 14px;
+      }
       {% block custom_style %}{% endblock %}
     </style>
   </head>
@@ -143,19 +146,25 @@
       <div class="container">
         <hr />
         <div class="row">
-          <div class="col-xs-6 col-sm-8 col-md-9">
-            <p>&copy; 2014 ООО «Деливери интернешнл»</p>
+          <div class="col-xs-10 col-sm-8 col-md-9">
+            <p>&copy; 2014 ООО&nbsp;«Деливери&nbsp;интернешнл»<br />
+            <span class="text-muted">Сервис находится в разработке</span></p>
           </div>
-          <div class="col-xs-6 col-sm-4 col-md-3">
-            <form role="search" class="">
-              <div class="input-group">
-                <label class="sr-only" for="id_search">Поиск</label>
-                <input type="search" id="id_search" class="form-control" placeholder="поиск" />
-                <span class="input-group-btn">
-                  <button type="submit" class="btn btn-default">&#8626;</button>
-                </span>
-              </div>
-            </form>
+          <div class="col-xs-2 col-sm-4 col-md-3">
+            <div class="hidden-xs">
+              <form role="search" class="">
+                <div class="input-group">
+                  <label class="sr-only" for="id_search">Поиск</label>
+                  <input type="search" id="id_search" class="form-control" placeholder="поиск" />
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default">&#8626;</button>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="visible-xs pull-right">
+              <p><a href="#" role="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></a></p>
+            </div>
           </div>
         </div>
       </div>
