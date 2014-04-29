@@ -1,0 +1,32 @@
+.popover {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+.popover .popover-content {
+  padding-right: 35px;
+}
+.popover .close {
+  position: relative;
+  top: -2px;
+  right: -21px;
+  color: inherit;
+}
+.popover .close:hover, .popover .close:focus {
+  color: #000000;
+}
+.popover p, .popover ul {
+  margin-bottom: 0;
+}
+.popover.right .arrow {
+  border-right-color: #ebccd1;
+}
+.popover.right .arrow:after {
+  border-right-color: #f2dede;
+}
+.popover.bottom .arrow {
+  border-bottom-color: #ebccd1;
+}
+.popover.bottom .arrow:after {
+  border-bottom-color: #f2dede;
+}

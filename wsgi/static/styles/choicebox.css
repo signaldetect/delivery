@@ -1,0 +1,49 @@
+.choicebox {
+  padding: 0 !important;
+  border: 0 !important;
+}
+.choicebox.on-focus {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+}
+.choicebox.on-focus button, .choicebox.on-focus ul {
+  border-color: #66afe9;
+}
+.choicebox button {
+  padding: 10px 30px 10px 10px;
+  text-align: left;
+  white-space: normal;
+  font-size: inherit;
+}
+.choicebox button:focus {
+  outline: 0;
+}
+.choicebox button.options-show {
+  border-bottom-color: #cccccc;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.choicebox ul {
+  background-color: #f9f9f9;
+  border: 1px solid #cccccc;
+  border-top: 0;
+  border-radius: 0 0 6px 6px;
+  font-size: inherit;
+}
+.choicebox ul :last-child {
+  border-radius: 0 0 6px 6px;
+}
+.choicebox ul li {
+  padding: 10px;
+  border-top: 2px solid #ffffff;
+  cursor: pointer;
+}
+.choicebox ul li:hover {
+  background-color: #ebebeb;
+}
+.choicebox span.caret {
+  float: right;
+  position: relative;
+  top: 8px;
+  right: -20px;
+}
