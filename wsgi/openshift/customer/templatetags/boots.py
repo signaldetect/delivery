@@ -22,6 +22,7 @@ def _base_attrs(fld, *args, **kwargs):
         'class': '',
         'name': ' name="{0}"'.format(fld.html_name),
         'value': '',
+        'pure_value': '',
         'maxlength': '',
         'required': (' required' if fld.field.required else ''),
         'autofocus': (' autofocus' if 'autofocus' in args else ''),
@@ -37,6 +38,7 @@ def _base_attrs(fld, *args, **kwargs):
     value = fld.value()
     if value is not None:
         attrs['value'] = ' value="{0}"'.format(value)
+        attrs['pure_value'] = value
     # [maxlength]
     maxlen = getattr(fld.field, 'max_length', None)
     if maxlen is not None:
@@ -73,6 +75,7 @@ def b_input(fld, *args, **kwargs):
     # [value]
     if input_type == 'password':
         attrs['value'] = ''
+        attrs['pure_value'] = ''
     #
     return '{label}<input{type}{id}{class}{name}{value}{placeholder}' \
            '{maxlength}{required}{autofocus}{errors} />'.format(**attrs)
@@ -132,7 +135,7 @@ def b_textarea(fld, *args, **kwargs):
         attrs['rows'] = ' rows="{0}"'.format(kwargs['rows'])
     #
     return '{label}<textarea{id}{class}{name}{placeholder}{rows}' \
-           '{maxlength}{required}{autofocus}{errors}>{value}</textarea>' \
+           '{maxlength}{required}{autofocus}{errors}>{pure_value}</textarea>' \
            .format(**attrs)
 
 @register.simple_tag
