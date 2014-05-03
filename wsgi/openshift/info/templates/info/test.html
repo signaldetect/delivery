@@ -14,7 +14,7 @@ html {
   min-height: 100%;
 }
 body {
-  margin-bottom: 85px;
+  margin-bottom: 60px;
 }
 .navbar {
   margin-bottom: 0;
@@ -27,53 +27,6 @@ body {
   padding: 15px;
   color: #555555;
   background-color: #e7e7e7;
-}
-.jumbotron.board {
-  background: #202020 url("/static/images/board-bg.png") center repeat;
-  background-color: #202020;
-  color: #999999;
-  padding-left: 0;
-  padding-right: 0;
-}
-.jumbotron.board h1 {
-  margin-top: 0;
-  color: #ffffff;
-}
-.jumbotron.board h2, .jumbotron.board h3 {
-  margin-bottom: 20px;
-  color: #4183c4;
-}
-.jumbotron.board ul li {
-  font-size: 21px;
-  margin-bottom: 10px;
-}
-.jumbotron.board ul li .glyphicon {
-  top: 4px;
-}
-.jumbotron dl {
-  font-size: 21px;
-  margin-bottom: 0;
-}
-dl {
-  margin-bottom: 40px;
-}
-.dl-horizontal dt {
-  float: none;
-  width: inherit;
-  clear: none;
-  text-align: left;
-  overflow: auto;
-  text-overflow: inherit;
-  white-space: inherit;
-  font-weight: normal;
-  color: #8a8a8a;
-}
-.dl-horizontal dd {
-  margin-left: 0;
-  margin-bottom: 20px;
-}
-.lead.page-informing {
-  margin-top: 20px;
 }
 .txt a, a.txt {
   text-decoration: none;
@@ -88,10 +41,24 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 85px;
+  height: 60px;
 }
 footer hr {
   margin-bottom: 14px;
+}
+
+body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+code {
+  font-size: 80%;
 }
 </style>
   </head>
@@ -130,6 +97,21 @@ footer hr {
       </div>
     </div>
 
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="page-header">
+        <h1>Sticky footer with fixed navbar</h1>
+      </div>
+      <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body > .container</code>.</p>
+      <p>Back to <a href="../sticky-footer">the default sticky footer</a> minus the navbar.</p>
+    </div>
+
+    <footer>
+      <div class="container">
+        <p class="text-muted">Place sticky footer content here.</p>
+      </div>
+    </footer>
+
     <!--div role="navigation" class="navbar navbar-default navbar-static-top">
       <div class="container">
         <div class="navbar-header">
@@ -166,11 +148,10 @@ footer hr {
           </ul>
         </div>
       </div>
-    </div-->
-
+    </div>
     <div class="container">
     </div>
-    <!--footer>
+    <footer>
       <div class="container">
         <hr />
         <div class="row">
@@ -199,7 +180,6 @@ footer hr {
     </footer-->
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    {% block ground %}{% endblock %}
   </body>
 </html>
 
