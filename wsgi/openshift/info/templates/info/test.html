@@ -1,3 +1,88 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Test{% endblock %}</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="/static/styles/pages.css" rel="stylesheet">
+    {% block roof %}{% endblock %}
+  </head>
+  <body>
+    <div role="navigation" class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+{% ifequal menu_item index.name %}
+          <span class="navbar-brand">{{ index.text }}</span>
+{% else %}
+          <a href="{% url 'info:'|add:index.name %}" class="navbar-brand">{{ index.text }}</a>
+{% endifequal %}
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+{% for item in menu.info %}
+  {% ifequal menu_item item.name %}
+            <li><p class="navbar-text active">{{ item.text }}</p></li>
+  {% else %}
+            <li><a href="{% if item.path %}{% url 'info:'|add:item.path item.name %}{% else %}{% url 'info:'|add:item.name %}{% endif %}"><span class="ref">{{ item.text }}</span></a></li>
+  {% endifequal %}
+{% endfor %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+{% for item in menu.customer %}
+  {% ifequal menu_item item.name %}
+            <li><p class="navbar-text active">{{ item.text }}</p></li>
+  {% else %}
+            <li><a href="{% url 'customer:'|add:item.name %}"><span class="ref">{{ item.text }}</span></a></li>
+  {% endifequal %}
+{% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% block featured_content %}{% endblock %}
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+    <!--footer>
+      <div class="container">
+        <hr />
+        <div class="row">
+          <div class="col-xs-10 col-sm-8 col-md-9">
+            <p>&copy; 2014 «Карготрек»<br />
+            <span class="text-muted">Сервис находится в разработке</span></p>
+          </div>
+          <div class="col-xs-2 col-sm-4 col-md-3">
+            <div class="hidden-xs">
+              <form role="search" class="">
+                <div class="input-group">
+                  <label class="sr-only" for="id_search">Поиск</label>
+                  <input type="search" id="id_search" class="form-control" placeholder="поиск" />
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default">&#8626;</button>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <div class="visible-xs pull-right">
+              <p><a href="#" role="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer-->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    {% block ground %}{% endblock %}
+  </body>
+</html>
 
-{% block title %}Test{% endblock %}
