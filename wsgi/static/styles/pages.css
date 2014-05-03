@@ -5,11 +5,6 @@ html {
 body {
   margin-bottom: 85px;
 }
-@media (min-width: 768px) {
-  .navbar-form.navbar-right {
-    width: 25%;
-  }
-}
 .navbar {
   margin-bottom: 0;
 }
@@ -26,6 +21,8 @@ body {
   background: #202020 url("/static/images/board-bg.png") center repeat;
   background-color: #202020;
   color: #999999;
+  padding-left: 0;
+  padding-right: 0;
 }
 .jumbotron.board h1 {
   margin-top: 0;
