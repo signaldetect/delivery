@@ -5,9 +5,6 @@ from info import views
 urlpatterns = patterns('',
     url(r'^$', views.Home.as_view(), name='home'),
 
-    url(r'^test/$',
-        views.TemplateView.as_view(template_name='info/test.html')),
-
     url(r'^news/$', views.News.as_view(), name='news'),
     url(r'^news/(?P<year>\d{4})/$', views.News.as_view(), name='news'),
 
